@@ -1,0 +1,14 @@
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root {
+    --mdc-filled-text-field-container-color: #fff;
+    --mat-form-field-hover-state-layer-opacity: 0.01;
+    --mdc-filled-button-container-shape: 5px;
+    --mdc-outlined-button-container-shape: 5px;
+    --mdc-dialog-container-color: #fff;
+}
+
+span.select-option, .mat-mdc-select-value-text {
+    text-transform: capitalize;
+}

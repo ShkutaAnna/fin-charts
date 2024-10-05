@@ -1,0 +1,19 @@
+<form [formGroup]="timeBackForm" class="my-4" (ngSubmit)="onTimeBackSubmit()">
+    <mat-form-field class="w-100">
+      <mat-label>Periodicity</mat-label>
+      <mat-select formControlName="periodicity" name="periodicity">
+        <mat-option *ngFor="let per of periodicityOptions" [value]="per">
+            <span class="select-option">{{per}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Interval</mat-label>
+      <input matInput type="number" formControlName="interval">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Bars count</mat-label>
+      <input matInput type="number" formControlName="barsCount">
+    </mat-form-field>
+    <button mat-flat-button type="submit" [disabled]="!canSubmitTimeBackForm()">Submit</button>
+</form>

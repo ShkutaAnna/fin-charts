@@ -1,0 +1,24 @@
+<form [formGroup]="dateRangeForm" class="my-4" (ngSubmit)="onDateRangeSubmit()">
+    <mat-form-field class="w-100">
+        <mat-label>Periodicity</mat-label>
+        <mat-select formControlName="periodicity" name="periodicity">
+            <mat-option *ngFor="let per of periodicityOptions" [value]="per">
+                <span class="select-option">{{per}}</span>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Interval</mat-label>
+        <input matInput type="number" formControlName="interval">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input formGroupName="dateRange" [rangePicker]="picker">
+            <input matStartDate formControlName="startDate" placeholder="Start date">
+            <input matEndDate formControlName="endDate" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-flat-button type="submit" [disabled]="!canSubmitDateRangeForm()">Submit</button>
+</form>

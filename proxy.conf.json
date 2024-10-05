@@ -1,0 +1,20 @@
+{
+    "/apiurl": {
+        "target": "https://platform.fintacharts.com",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/apiurl": ""
+        }
+    },
+    "/apiwss": {
+        "target": "wss://platform.fintacharts.com",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/apiwss": ""
+        }
+    }
+}

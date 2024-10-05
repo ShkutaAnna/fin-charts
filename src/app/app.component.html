@@ -1,0 +1,67 @@
+<main>
+  <div class="main-container">
+    <section class="subscription">
+      <mat-form-field class="form-field">
+        <mat-label>Provider</mat-label>
+        <mat-select [(ngModel)]="provider" name="provider" (ngModelChange)="onProviderChange()">
+          <mat-option *ngFor="let pr of providers" [value]="pr">{{pr}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Instrument</mat-label>
+        <mat-select [(ngModel)]="instrument" name="provider" [disabled]="!provider" (ngModelChange)="onInstrumentChange($event)">
+          <mat-option *ngFor="let inst of instruments" [value]="inst">{{inst.symbol}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button *ngIf="!isSubscribed" mat-flat-button [disabled]="!instrument" (click)="onSubscribe()">Subscribe</button>
+
+      <button *ngIf="isSubscribed" mat-stroked-button [disabled]="!instrument" (click)="onUnsubscribe()">Unubscribe</button>
+    </section>
+
+    <section class="market-data">
+      <h5 class="">Market data:</h5>
+      <div class="market-data box">
+        <div class="market-data-container">
+          <div class="market-data-item">
+            <label>Symbol:</label>
+            <span>{{symbol}}</span>
+          </div>
+          <div class="market-data-item">
+            <label>Price:</label>
+            <span>{{price}}</span>
+          </div>
+          <div class="market-data-item">
+            <label>Time:</label>
+            <span>{{time}}</span>
+          </div>
+        </div>
+      </div>  
+    </section>
+
+    <section class="historic-settings">
+      <mat-slide-toggle class="historical-toggle" [formControl]="isHistoricalDataShown">
+        <span class="toggle-label">Show historical data</span>
+      </mat-slide-toggle>
+
+      <button mat-button (click)="onHistoricalDataFormVisibilityChange()">
+        {{isHistoricalDataFormShown ? 'Hide historical data form' : 'Show form historical data form'}}
+      </button>
+    </section>
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [ngClass]="{'hidden': !isHistoricalDataFormShown}">
+      <mat-tab label="Time back">
+        <time-back [provider]="provider" [instrument]="instrument" (chartDataEvent)="addHistoricalChartData($event)"></time-back>
+      </mat-tab>
+      <mat-tab label="Date range">
+        <date-range [provider]="provider" [instrument]="instrument" (chartDataEvent)="addHistoricalChartData($event)"></date-range>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div class="diagram-container">
+    <diagram #diagram></diagram>
+  </div>
+
+</main>
