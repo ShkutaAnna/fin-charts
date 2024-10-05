@@ -1,16 +1,12 @@
-import { Component, Inject, LOCALE_ID, ViewChild } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { ApiInstrumentsService } from './services/api-instruments.service';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginModalComponent } from './components/login-modal/login-modal.component';
 import { WebsocketService } from './services/websocket.service';
 import { DiagramComponent } from './components/diagram/diagram.component';
-import { formatDate } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ApiBarsService } from './services/api-bars.service';
+import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { IInstrument } from './interfaces/instrument';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -22,7 +18,7 @@ export class AppComponent {
     diagramComponent!: DiagramComponent;
     
     public title = 'fin-charts';
-    
+
     public symbol = 'N/A';
     public price = 'N/A';
     public time = 'N/A';
@@ -82,7 +78,7 @@ export class AppComponent {
     public onSubscribe(): void {
       this.isSubscribed = true;
       this.diagramComponent.clearData();
-      const websocketUrl = '/apiwss/api/streaming/ws/v1/realtime';
+      const websocketUrl = `${environment.wwsUrl}/api/streaming/ws/v1/realtime`;
       this._websocketService.connect(websocketUrl, this._authService.getToken(), {
         type: 'l1-subscription',
         id: '1',
