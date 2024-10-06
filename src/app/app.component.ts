@@ -34,6 +34,9 @@ export class AppComponent {
     public isHistoricalDataShown = new FormControl(false);
     public isHistoricalDataFormShown = false;
 
+    public resetDataRangeLastParams: Subject<void> = new Subject<void>();
+    public resetTimeBackLastParams: Subject<void> = new Subject<void>();
+
     private _destroy$ = new Subject<void>();
 
     constructor(
@@ -47,6 +50,10 @@ export class AppComponent {
       this.isHistoricalDataShown.valueChanges.pipe(takeUntil(this._destroy$)).subscribe((show) => {
           this.diagramComponent.clearData();
           this.isHistoricalDataFormShown = !!show;
+          if (!show) {
+            this.resetDataRangeLastParams.next();
+            this.resetTimeBackLastParams.next();
+          }
       });
     }
 
@@ -71,13 +78,14 @@ export class AppComponent {
     }
 
     public onHistoricalDataFormVisibilityChange(): void {
-        this.diagramComponent.clearData();
         this.isHistoricalDataFormShown = !this.isHistoricalDataFormShown;
     }
 
     public onSubscribe(): void {
       this.isSubscribed = true;
-      this.diagramComponent.clearData();
+      if (!this.isHistoricalDataShown.getRawValue()) {
+        this.diagramComponent.clearData();
+      }
       const websocketUrl = `${environment.wwsUrl}/api/streaming/ws/v1/realtime`;
       this._websocketService.connect(websocketUrl, this._authService.getToken(), {
         type: 'l1-subscription',
@@ -107,7 +115,17 @@ export class AppComponent {
       this._websocketService.close();
     }
 
-    public addHistoricalChartData(data: any): void {
+    public addDateRangeChartData(data: any): void {
+      this.resetTimeBackLastParams.next();
+      this._addHistoricalChartData(data);
+    }
+
+    public addTimeBackChartData(data: any): void {
+      this.resetDataRangeLastParams.next();
+      this._addHistoricalChartData(data);
+    }
+
+    private _addHistoricalChartData(data: any): void {
       this.isHistoricalDataShown.setValue(true);
       this.diagramComponent.clearData();
       this.diagramComponent.addData(data);

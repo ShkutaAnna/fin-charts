@@ -1,5 +1,6 @@
-import { Component, EventEmitter, input, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Observable, Subject, takeUntil } from "rxjs";
 import { ApiBarsService } from "../../services/api-bars.service";
 import { Periodicity } from "../../interfaces/periodicity";
 import { IInstrument } from "../../interfaces/instrument";
@@ -15,6 +16,8 @@ import { IInstrument } from "../../interfaces/instrument";
     @Input()
     instrument: IInstrument | null = null;
 
+    @Input() resetLastParamsEvents: Observable<void> | undefined;
+
     @Output() chartDataEvent = new EventEmitter<any>();
 
     public periodicityOptions = Object.values(Periodicity);
@@ -26,6 +29,8 @@ import { IInstrument } from "../../interfaces/instrument";
         barsCount: 0,
     };
 
+    private _destroy$ = new Subject<void>();
+
     constructor(
         private _fb: FormBuilder,
         private _apiBarsService: ApiBarsService,
@@ -35,6 +40,21 @@ import { IInstrument } from "../../interfaces/instrument";
             interval: [1, [Validators.required, Validators.min(1), Validators.max(60)]],
             barsCount: [10, [Validators.required, Validators.min(1), Validators.max(5000)]],
           });
+    }
+
+    ngOnInit() {
+        this.resetLastParamsEvents?.pipe(takeUntil(this._destroy$)).subscribe(() => {
+            this.timeBackLastParams = {
+                periodicity: '',
+                interval: 0,
+                barsCount: 0,
+            };
+        });
+    }
+
+    ngOnDestroy() {
+        this._destroy$.next();
+        this._destroy$.complete();
     }
 
     public onTimeBackSubmit(): void {

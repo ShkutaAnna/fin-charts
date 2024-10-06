@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiBarsService } from "../../services/api-bars.service";
 import { Periodicity } from "../../interfaces/periodicity";
 import { IInstrument } from "../../interfaces/instrument";
+import { Observable, Subject, takeUntil } from "rxjs";
 
 @Component({
     selector: 'date-range',
@@ -14,6 +15,8 @@ import { IInstrument } from "../../interfaces/instrument";
 
     @Input()
     instrument: IInstrument | null = null;
+
+    @Input() resetLastParamsEvents: Observable<void> | undefined;
 
     @Output() chartDataEvent = new EventEmitter<any>();
 
@@ -29,6 +32,8 @@ import { IInstrument } from "../../interfaces/instrument";
         },
     };
 
+    private _destroy$ = new Subject<void>();
+
     constructor(
         private _fb: FormBuilder,
         private _apiBarsService: ApiBarsService,
@@ -43,21 +48,38 @@ import { IInstrument } from "../../interfaces/instrument";
         });
     }
 
+    ngOnInit() {
+        this.resetLastParamsEvents?.pipe(takeUntil(this._destroy$)).subscribe(() => {
+            this.dateRangeLastParams = {
+                periodicity: '',
+                interval: 0,
+                dateRange: {
+                    startDate: new Date(Date.now()),
+                    endDate: new Date(Date.now()),
+                },
+            };
+        });
+    }
+
+    ngOnDestroy() {
+        this._destroy$.next();
+        this._destroy$.complete();
+    }
+
     public onDateRangeSubmit(): void {
         this.dateRangeLastParams = this.dateRangeForm.getRawValue();
         const { dateRange, periodicity, interval } = this.dateRangeLastParams;
-        const startDate = dateRange.startDate;
-        const endDate = dateRange.startDate.getTime() === dateRange.endDate.getTime() ? null : dateRange.endDate;
-        if (!endDate) {
-            this.dateRangeForm.get('dateRange.endDate')?.setValue(new Date(Date.now()));
-        }
+        const { startDate, endDate } = dateRange;
+        const startDateStr = this._getFormattedDate(startDate);
+        const endDateStr = this._getFormattedDate(endDate);
+        const isStartEndSame = startDateStr === endDateStr;
         this._apiBarsService.getDateRange({
           instrumentId: this.instrument?.id ?? '',
           interval,
           periodicity,
           provider: this.provider,
-          startDate: this._getFormattedDate(startDate),
-          ...(endDate && { endDate: this._getFormattedDate(endDate) }),
+          startDate: startDateStr,
+          ...(!isStartEndSame && { endDate: endDateStr }),
         }).subscribe(
           response => {
             const dataPoints = response.data ?? [];

@@ -46,16 +46,24 @@
       </mat-slide-toggle>
 
       <button mat-button (click)="onHistoricalDataFormVisibilityChange()">
-        {{isHistoricalDataFormShown ? 'Hide historical data form' : 'Show form historical data form'}}
+        {{isHistoricalDataFormShown ? 'Hide ' : 'Show '}} historical data form
       </button>
     </section>
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [ngClass]="{'hidden': !isHistoricalDataFormShown}">
       <mat-tab label="Time back">
-        <time-back [provider]="provider" [instrument]="instrument" (chartDataEvent)="addHistoricalChartData($event)"></time-back>
+        <time-back
+          [provider]="provider"
+          [instrument]="instrument"
+          [resetLastParamsEvents]="resetTimeBackLastParams.asObservable()"
+          (chartDataEvent)="addTimeBackChartData($event)"></time-back>
       </mat-tab>
       <mat-tab label="Date range">
-        <date-range [provider]="provider" [instrument]="instrument" (chartDataEvent)="addHistoricalChartData($event)"></date-range>
+        <date-range
+          [provider]="provider"
+          [instrument]="instrument"
+          [resetLastParamsEvents]="resetDataRangeLastParams.asObservable()"
+          (chartDataEvent)="addDateRangeChartData($event)"></date-range>
       </mat-tab>
     </mat-tab-group>
   </div>
