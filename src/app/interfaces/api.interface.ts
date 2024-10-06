@@ -34,3 +34,41 @@ export interface IGetTimeBackParams {
     periodicity: string;
     timeBack: string;
 }
+
+export interface IBarsResponse {
+    data: IBarsItem[];
+}
+
+export interface IBarsItem {
+    t: string;
+    o: number;
+    h: number;
+    l: number;
+    c: number;
+    v: number;
+}
+
+export interface IPaging {
+    page: number;
+    pages: number;
+    items: number;
+}
+
+export interface IInstrument {
+    id: string;
+    symbol: string;
+    kind: string;
+    description: string;
+    tickSize: number;
+    currency: string;
+    baseCurrency: string;
+}
+
+export interface IInstrumentsResponse {
+    paging: IPaging;
+    data: IInstrument[];
+}
+
+export interface IProvidersResponse {
+    data: string[];
+}

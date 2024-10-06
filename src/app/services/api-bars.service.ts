@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGetDateRangeParams, IGetCountBackParams } from '../interfaces/api.interface';
+import { IGetDateRangeParams, IGetCountBackParams, IBarsResponse } from '../interfaces/api.interface';
 import { ApiBaseService } from './api-base.service';
 
 @Injectable({
@@ -11,11 +11,11 @@ export class ApiBarsService {
 
     constructor(private _baseApiService: ApiBaseService) {}
 
-    public getCountBack(params?: IGetCountBackParams): Observable<any> {
+    public getCountBack(params?: IGetCountBackParams): Observable<IBarsResponse> {
         return this._baseApiService.getData(`${this._barsBaseUrl}/count-back`, params);
     }
 
-    public getDateRange(params?: IGetDateRangeParams): Observable<any> {
+    public getDateRange(params?: IGetDateRangeParams): Observable<IBarsResponse> {
         return this._baseApiService.getData(`${this._barsBaseUrl}/date-range`, params);
     }
 }

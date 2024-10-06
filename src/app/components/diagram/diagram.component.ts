@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { IDiagramPoint } from '../../interfaces/diagram';
 
 @Component({
   selector: 'diagram',
   templateUrl: './diagram.component.html',
 })
 export class DiagramComponent {
-    public dataPoints:any[] = [];
+    public dataPoints: IDiagramPoint[] = [];
     public chart: any;
     
     public chartOptions = {
@@ -20,11 +21,11 @@ export class DiagramComponent {
         }]
     }
     
-    getChartInstance(chart: object) {
+    public getChartInstance(chart: object) {
         this.chart = chart;
     }
     
-    addData = (data: { x: any, y: any }[]) => {
+    public addData = (data: IDiagramPoint[]) => {
         data.forEach( (val) => {
             this.dataPoints.push(val); 
         })

@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { ApiInstrumentsService } from './services/api-instruments.service';
 import { WebsocketService } from './services/websocket.service';
 import { DiagramComponent } from './components/diagram/diagram.component';
-import { FormControl } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { IInstrument } from './interfaces/instrument';
+import { IInstrument } from './interfaces/api.interface';
 import { environment } from '../environments/environment';
+import { IDiagramPoint } from './interfaces/diagram';
 
 @Component({
     selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent {
     public time = 'N/A';
 
     public provider = '';
-    public providers = [];
+    public providers: string[] = [];
 
     public instrument: IInstrument | null  = null;
     public instruments: IInstrument[] = [];
@@ -115,17 +116,17 @@ export class AppComponent {
       this._websocketService.close();
     }
 
-    public addDateRangeChartData(data: any): void {
+    public addDateRangeChartData(data: IDiagramPoint[]): void {
       this.resetTimeBackLastParams.next();
       this._addHistoricalChartData(data);
     }
 
-    public addTimeBackChartData(data: any): void {
+    public addTimeBackChartData(data: IDiagramPoint[]): void {
       this.resetDataRangeLastParams.next();
       this._addHistoricalChartData(data);
     }
 
-    private _addHistoricalChartData(data: any): void {
+    private _addHistoricalChartData(data: IDiagramPoint[]): void {
       this.isHistoricalDataShown.setValue(true);
       this.diagramComponent.clearData();
       this.diagramComponent.addData(data);

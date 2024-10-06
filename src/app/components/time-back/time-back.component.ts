@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { ApiBarsService } from "../../services/api-bars.service";
 import { Periodicity } from "../../interfaces/periodicity";
-import { IInstrument } from "../../interfaces/instrument";
+import { IInstrument } from "../../interfaces/api.interface";
+import { IDiagramPoint } from "../../interfaces/diagram";
 
 @Component({
     selector: 'time-back',
@@ -18,7 +19,7 @@ import { IInstrument } from "../../interfaces/instrument";
 
     @Input() resetLastParamsEvents: Observable<void> | undefined;
 
-    @Output() chartDataEvent = new EventEmitter<any>();
+    @Output() chartDataEvent = new EventEmitter<IDiagramPoint[]>();
 
     public periodicityOptions = Object.values(Periodicity);
 
@@ -72,14 +73,14 @@ import { IInstrument } from "../../interfaces/instrument";
             const chartData = dataPoints.map((item: { t: string, c: number }) => {
                 const { t, c } = item;
                 return {
-                x: new Date(t),
-                y: c,
+                    x: new Date(t),
+                    y: c,
                 };
             });
             this.chartDataEvent.emit(chartData);
             },
             error => {
-            console.log('Failed to load time back data: ', error);
+                console.log('Failed to load time back data: ', error);
             });
     }
 

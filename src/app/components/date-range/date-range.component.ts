@@ -1,9 +1,10 @@
 import { Component, EventEmitter, input, Input, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Observable, Subject, takeUntil } from "rxjs";
 import { ApiBarsService } from "../../services/api-bars.service";
 import { Periodicity } from "../../interfaces/periodicity";
-import { IInstrument } from "../../interfaces/instrument";
-import { Observable, Subject, takeUntil } from "rxjs";
+import { IInstrument } from "../../interfaces/api.interface";
+import { IDiagramPoint } from "../../interfaces/diagram";
 
 @Component({
     selector: 'date-range',
@@ -18,7 +19,7 @@ import { Observable, Subject, takeUntil } from "rxjs";
 
     @Input() resetLastParamsEvents: Observable<void> | undefined;
 
-    @Output() chartDataEvent = new EventEmitter<any>();
+    @Output() chartDataEvent = new EventEmitter<IDiagramPoint[]>();
 
     public periodicityOptions = Object.values(Periodicity);
 
@@ -74,27 +75,27 @@ import { Observable, Subject, takeUntil } from "rxjs";
         const endDateStr = this._getFormattedDate(endDate);
         const isStartEndSame = startDateStr === endDateStr;
         this._apiBarsService.getDateRange({
-          instrumentId: this.instrument?.id ?? '',
-          interval,
-          periodicity,
-          provider: this.provider,
-          startDate: startDateStr,
-          ...(!isStartEndSame && { endDate: endDateStr }),
+            instrumentId: this.instrument?.id ?? '',
+            interval,
+            periodicity,
+            provider: this.provider,
+            startDate: startDateStr,
+            ...(!isStartEndSame && { endDate: endDateStr }),
         }).subscribe(
-          response => {
+        response => {
             const dataPoints = response.data ?? [];
             const chartData = dataPoints.map((item: { t: string, c: number }) => {
-              const { t, c } = item;
-              return {
-                x: new Date(t),
-                y: c,
-              };
+                const { t, c } = item;
+                return {
+                    x: new Date(t),
+                    y: c,
+                };
             });
             this.chartDataEvent.emit(chartData);
-          },
-          error => {
+        },
+        error => {
             console.log('Failed to load date range data: ', error);
-          });
+        });
     }
 
     public canSubmitDateRangeForm(): boolean {

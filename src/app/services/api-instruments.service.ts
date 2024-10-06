@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGetInstrumentsParams, IGetExchangesParams } from '../interfaces/api.interface';
+import { IGetInstrumentsParams, IGetExchangesParams, IInstrumentsResponse, IProvidersResponse } from '../interfaces/api.interface';
 import { ApiBaseService } from './api-base.service';
 
 @Injectable({
@@ -15,11 +15,11 @@ export class ApiInstrumentsService {
     return this._baseApiService.getData(`${this._instrumentsBaseUrl}/exchanges`, params);
   }
 
-  public getInstruments(params?: IGetInstrumentsParams): Observable<any> {
+  public getInstruments(params?: IGetInstrumentsParams): Observable<IInstrumentsResponse> {
     return this._baseApiService.getData(`${this._instrumentsBaseUrl}/instruments`, params);
   }
 
-  public getProviders(): Observable<any> {
+  public getProviders(): Observable<IProvidersResponse> {
     return this._baseApiService.getData(`${this._instrumentsBaseUrl}/providers`);
   }
 }
