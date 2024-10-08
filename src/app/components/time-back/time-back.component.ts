@@ -9,6 +9,7 @@ import { IDiagramPoint } from "../../interfaces/diagram";
 @Component({
     selector: 'time-back',
     templateUrl: './time-back.component.html',
+    styleUrl: '../../form.scss',
   })
   export class TimeBackComponent {
     @Input()

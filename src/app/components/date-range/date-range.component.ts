@@ -9,6 +9,7 @@ import { IDiagramPoint } from "../../interfaces/diagram";
 @Component({
     selector: 'date-range',
     templateUrl: './date-range.component.html',
+    styleUrl: '../../form.scss',
   })
   export class DateRangeComponent {
     @Input()

@@ -13,3 +13,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 span.select-option, .mat-mdc-select-value-text {
     text-transform: capitalize;
 }
+
+h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: 500;
+}
