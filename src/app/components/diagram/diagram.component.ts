@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IDiagramPoint } from '../../interfaces/diagram';
+import { IDiagramPoint } from '@interfaces/diagram';
 
 @Component({
   selector: 'diagram',

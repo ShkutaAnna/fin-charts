@@ -5,8 +5,8 @@ import {
 import { throwError, Observable } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
+import { LoginModalComponent } from '@components/login-modal/login-modal.component';
 import { AuthService } from './auth.service';
-import { LoginModalComponent } from '../components/login-modal/login-modal.component';
 
 @Injectable()
 export class TokenInterceptorService implements HttpInterceptor {
@@ -53,11 +53,11 @@ export class TokenInterceptorService implements HttpInterceptor {
     );
   }
 
-    private openLoginModal(): Observable<any> {
-      const dialogRef = this._dialog.open(LoginModalComponent, {
-        width: '300px',
-      });
+  private openLoginModal(): Observable<any> {
+    const dialogRef = this._dialog.open(LoginModalComponent, {
+      width: '300px',
+    });
 
-      return dialogRef.afterClosed();
-    }
+    return dialogRef.afterClosed();
+  }
 }

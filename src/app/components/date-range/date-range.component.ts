@@ -1,15 +1,15 @@
 import { Component, EventEmitter, input, Input, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subject, takeUntil } from "rxjs";
-import { ApiBarsService } from "../../services/api-bars.service";
-import { Periodicity } from "../../interfaces/periodicity";
-import { IInstrument } from "../../interfaces/api.interface";
-import { IDiagramPoint } from "../../interfaces/diagram";
+import { ApiBarsService } from "@services/api-bars.service";
+import { Periodicity } from "@interfaces/periodicity";
+import { IInstrument } from "@interfaces/api.interface";
+import { IDiagramPoint } from "@interfaces/diagram";
 
 @Component({
     selector: 'date-range',
     templateUrl: './date-range.component.html',
-    styleUrl: '../../form.scss',
+    styleUrl: '../../shared/form.scss',
   })
   export class DateRangeComponent {
     @Input()

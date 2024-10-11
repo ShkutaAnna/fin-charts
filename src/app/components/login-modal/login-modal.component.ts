@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'login-modal',
   templateUrl: './login-modal.component.html',
+  styleUrl: '../../shared/form.scss',
 })
 export class LoginModalComponent {
   username: string = '';

@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from './services/auth.service';
-import { ApiInstrumentsService } from './services/api-instruments.service';
-import { WebsocketService } from './services/websocket.service';
-import { DiagramComponent } from './components/diagram/diagram.component';
-import { IInstrument } from './interfaces/api.interface';
-import { environment } from '../environments/environment';
-import { IDiagramPoint } from './interfaces/diagram';
+import { AuthService } from '@services/auth.service';
+import { ApiInstrumentsService } from '@services/api-instruments.service';
+import { WebsocketService } from '@services/websocket.service';
+import { DiagramComponent } from '@components/diagram/diagram.component';
+import { environment } from '@environments/environment';
+import { IDiagramPoint } from '@interfaces/diagram';
+import { IInstrument } from '@interfaces/api.interface';
 
 @Component({
     selector: 'app-root',
